@@ -92,9 +92,10 @@ static const NSTimeInterval kAnimationIntervalTransform = 0.2;
 - (CGRect)cropRect
 {
     if(self.frameView.cropRect.size.width == 0 || self.frameView.cropRect.size.height == 0) {
-        self.frameView.cropRect = CGRectMake((self.frameView.bounds.size.width-kDefaultCropWidth)/2,
-                                             (self.frameView.bounds.size.height-kDefaultCropHeight)/2,
-                                             kDefaultCropWidth,kDefaultCropHeight);
+        CGFloat width = [UIScreen mainScreen].bounds.size.width;
+        self.frameView.cropRect = CGRectMake((self.frameView.bounds.size.width-width)/2,
+                                             (self.frameView.bounds.size.height-width)/2,
+                                             width, width);
     }
     return self.frameView.cropRect;
 }
@@ -292,7 +293,6 @@ static const NSTimeInterval kAnimationIntervalTransform = 0.2;
     [self reset:YES];
 }
 
-
 - (IBAction)doneAction:(id)sender
 {
     self.view.userInteractionEnabled = NO;
@@ -325,6 +325,14 @@ static const NSTimeInterval kAnimationIntervalTransform = 0.2;
     if(self.doneCallback) {
         self.doneCallback(nil, YES);
     }
+}
+
+- (void)done{
+    [self doneAction:nil];
+}
+
+- (void)cancel{
+    [self cancelAction:nil];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
