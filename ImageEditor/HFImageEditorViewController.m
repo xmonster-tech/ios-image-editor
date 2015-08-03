@@ -335,6 +335,24 @@ static const NSTimeInterval kAnimationIntervalTransform = 0.2;
     [self cancelAction:nil];
 }
 
+- (UIImage *)getCropImage{
+    self.view.userInteractionEnabled = NO;
+    [self startTransformHook];
+    CGImageRef resultRef = [self newTransformedImage:self.imageView.transform
+                                    sourceImage:self.sourceImage.CGImage
+                                     sourceSize:self.sourceImage.size
+                              sourceOrientation:self.sourceImage.imageOrientation
+                                    outputWidth:self.outputWidth ? self.outputWidth : self.sourceImage.size.width
+                                        cropRect:self.cropRect
+                                imageViewSize:self.imageView.bounds.size];
+    UIImage *transform =  [UIImage imageWithCGImage:resultRef scale:1.0 orientation:UIImageOrientationUp];
+    CGImageRelease(resultRef);
+    self.view.userInteractionEnabled = YES;
+    [self endTransformHook];
+    
+    return transform;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark Touches
 ////////////////////////////////////////////////////////////////////////////////////////////////////
